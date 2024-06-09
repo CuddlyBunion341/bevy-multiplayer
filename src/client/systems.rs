@@ -2,9 +2,7 @@ use bevy::{
     asset::Assets,
     core_pipeline::core_3d::Camera3dBundle,
     ecs::{
-        entity::Entity,
         event::{EventReader, EventWriter},
-        query::{With, Without},
         system::{Commands, Query, Res, ResMut},
     },
     input::keyboard::{KeyCode, KeyboardInput},
@@ -18,8 +16,8 @@ use bevy::{
     render::{color::Color, mesh::Mesh},
     transform::components::Transform,
 };
-use multiplayer_demo::PlayerSync;
-use renet::{ClientId, DefaultChannel, RenetClient};
+use multiplayer_demo::PlayerAttributes;
+use renet::{DefaultChannel, RenetClient};
 
 use crate::{
     components::{MyPlayer, PlayerEntity},
@@ -27,12 +25,9 @@ use crate::{
     MyClientId,
 };
 
-pub fn send_message_system(
-    mut client: ResMut<RenetClient>,
-    query: Query<(&MyPlayer, &Transform)>,
-) {
+pub fn send_message_system(mut client: ResMut<RenetClient>, query: Query<(&MyPlayer, &Transform)>) {
     let (_, transform) = query.single();
-    let player_sync = PlayerSync {
+    let player_sync = PlayerAttributes {
         position: transform.translation.into(),
     };
     let message = bincode::serialize(&player_sync).unwrap();
@@ -49,11 +44,11 @@ pub fn receive_message_system(
         let server_message = bincode::deserialize(&message).unwrap();
 
         match server_message {
-            multiplayer_demo::RenetEvent::PlayerJoin(client_id) => {
+            multiplayer_demo::ServerMessage::PlayerJoin(client_id) => {
                 info!("Client connected: {}", client_id);
                 spawn_events.send(PlayerSpawnEvent(client_id));
             }
-            multiplayer_demo::RenetEvent::PlayerLeave(client_id) => {
+            multiplayer_demo::ServerMessage::PlayerLeave(client_id) => {
                 info!("Client disconnected: {}", client_id);
                 despawn_events.send(PlayerDespawnEvent(client_id));
             }
@@ -67,11 +62,11 @@ pub fn receive_message_system(
         let message = bincode::deserialize(&message).unwrap();
 
         match message {
-            multiplayer_demo::RenetEvent::LobbySync(positions) => {
-                lobby_sync_events.send(LobbySyncEvent(positions));
+            multiplayer_demo::ServerMessage::LobbySync(map) => {
+                lobby_sync_events.send(LobbySyncEvent(map));
             }
             _ => {
-                            info!("Unhandled message: {:?}", message);
+                info!("Unhandled message: {:?}", message);
             }
         }
     }

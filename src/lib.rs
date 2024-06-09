@@ -4,13 +4,18 @@ use renet::ClientId;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct PlayerSync {
+pub struct PlayerAttributes {
     pub position: [f32; 3]
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub enum RenetEvent {
+pub enum ClientMessage {
+    PlayerMove([f32; 3])
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum ServerMessage {
+    LobbySync(HashMap<ClientId, PlayerAttributes>),
     PlayerJoin(ClientId),
     PlayerLeave(ClientId),
-    LobbySync(HashMap<ClientId, PlayerSync>)
 }
