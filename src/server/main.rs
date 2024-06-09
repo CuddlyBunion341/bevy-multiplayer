@@ -9,7 +9,6 @@ use renet::{
     ConnectionConfig, RenetServer,
 };
 use systems::{handle_events_system, receive_message_system, send_message_system, setup_system, PlayerLobby};
-
 mod systems;
 mod messages;
 
