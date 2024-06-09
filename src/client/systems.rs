@@ -29,7 +29,7 @@ use crate::{
 
 pub fn send_message_system(
     mut client: ResMut<RenetClient>,
-    query: Query<(&PlayerEntity, &Transform), With<MyPlayer>>,
+    query: Query<(&MyPlayer, &Transform)>,
 ) {
     let (_, transform) = query.single();
     let player_sync = PlayerSync {
@@ -71,7 +71,7 @@ pub fn receive_message_system(
                 lobby_sync_events.send(LobbySyncEvent(positions));
             }
             _ => {
-                info!("Unhandled message: {:?}", message);
+                            info!("Unhandled message: {:?}", message);
             }
         }
     }
@@ -81,9 +81,9 @@ pub fn handle_keyboard_input_system() {}
 
 pub fn update_player_movement_system(
     mut keyboard_events: EventReader<KeyboardInput>,
-    mut query: Query<(&PlayerEntity, &mut Transform), With<MyPlayer>>,
+    mut query: Query<(&mut Transform, &MyPlayer)>,
 ) {
-    let (player_entity, mut transform) = query.single_mut();
+    let (mut transform, _) = query.single_mut();
 
     for event in keyboard_events.read() {
         let mut delta_position = Vec3::new(0.0, 0.0, 0.0);
@@ -125,7 +125,6 @@ pub fn setup_system(
             transform: Transform::from_xyz(0.0, 0.5, 0.0),
             ..default()
         },
-        PlayerEntity(ClientId::from_raw(0)),
         MyPlayer,
     ));
 }
@@ -137,6 +136,7 @@ pub fn handle_player_spawn_event_system(
     mut spawn_events: EventReader<PlayerSpawnEvent>,
 ) {
     for event in spawn_events.read() {
+        info!("Handling player spawn event: {:?}", event.0);
         let client_id = event.0;
 
         commands.spawn((
@@ -157,24 +157,23 @@ pub fn handle_player_spawn_event_system(
 pub fn handle_lobby_sync_event_system(
     mut spawn_events: EventWriter<PlayerSpawnEvent>,
     mut sync_events: EventReader<LobbySyncEvent>,
-    mut query: Query<(&PlayerEntity, &mut Transform), Without<MyPlayer>>,
+    mut query: Query<(&PlayerEntity, &mut Transform)>,
+    my_clinet_id: Res<MyClientId>,
 ) {
     let event_option = sync_events.read().last();
-
     if event_option.is_none() {
         return;
     }
-
     let event = event_option.unwrap();
 
     for (client_id, player_sync) in event.0.iter() {
+        if *client_id == my_clinet_id.0 {
+            continue;
+        }
+
         let mut found = false;
         for (player_entity, mut transform) in query.iter_mut() {
             if *client_id == player_entity.0 {
-                info!(
-                    "Updarting position of player {}: {:?}",
-                    client_id, player_sync.position
-                );
                 let new_position = player_sync.position;
                 transform.translation = new_position.into();
                 found = true;

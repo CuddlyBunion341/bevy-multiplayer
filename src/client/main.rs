@@ -64,5 +64,7 @@ fn main() {
     app.add_systems(Update, handle_lobby_sync_event_system);
     app.add_systems(Startup, setup_system);
 
+    info!("Client {} started", client_id);
+
     app.run();
 }

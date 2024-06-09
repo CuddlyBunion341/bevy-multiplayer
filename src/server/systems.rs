@@ -53,7 +53,7 @@ pub fn handle_events_system(mut server: ResMut<RenetServer>, mut server_events: 
             ServerEvent::ClientConnected { client_id } => {
                 println!("Client {client_id} connected");
                 player_lobby.0.insert(*client_id, PlayerSync { position: [0.0, 0.0, 0.0] });
-                server.broadcast_message(DefaultChannel::ReliableOrdered, bincode::serialize(&multiplayer_demo::RenetEvent::PlayerJoin(*client_id)).unwrap());
+                server.broadcast_message_except(*client_id, DefaultChannel::ReliableOrdered, bincode::serialize(&multiplayer_demo::RenetEvent::PlayerJoin(*client_id)).unwrap());
             }
             ServerEvent::ClientDisconnected { client_id, reason } => {
                 println!("Client {client_id} disconnected: {reason}");
