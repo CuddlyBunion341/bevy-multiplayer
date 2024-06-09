@@ -49,6 +49,12 @@ fn main() {
 
     app.insert_resource(transport);
 
+    // game events
+    app.add_event::<events::PlayerSpawnEvent>();
+    app.add_event::<events::PlayerDespawnEvent>();
+    app.add_event::<events::PlayerMoveEvent>();
+    app.add_event::<events::LobbySyncEvent>();
+
     // game systems
     app.add_systems(Update, send_message_system);
     app.add_systems(Update, receive_message_system);

@@ -1,4 +1,4 @@
-use bevy::{ecs::event::Event, utils::HashMap};
+use bevy::{ecs::event::Event};
 use multiplayer_demo::PlayerSync;
 use renet::ClientId;
 
@@ -12,4 +12,4 @@ pub struct PlayerDespawnEvent(pub ClientId);
 pub struct PlayerMoveEvent(pub ClientId, pub [f32; 3]);
 
 #[derive(Event)]
-pub struct LobbySyncEvent(pub HashMap<ClientId, PlayerSync>);
+pub struct LobbySyncEvent(pub std::collections::HashMap<ClientId, PlayerSync>);

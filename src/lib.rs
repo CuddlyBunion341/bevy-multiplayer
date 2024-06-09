@@ -1,8 +1,9 @@
-use bevy::utils::HashMap;
+use std::collections::HashMap;
+
 use renet::ClientId;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PlayerSync {
     pub position: [f32; 3]
 }
