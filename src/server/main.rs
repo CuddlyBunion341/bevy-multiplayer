@@ -19,13 +19,11 @@ fn main() {
     let mut app = App::new();
 
     // base plugins
-
     app.add_plugins(MinimalPlugins);
     app.add_plugins(LogPlugin::default());
     app.add_plugins(RenetServerPlugin);
 
     // renet server
-
     let server = RenetServer::new(ConnectionConfig::default());
     app.insert_resource(server);
 
