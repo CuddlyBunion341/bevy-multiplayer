@@ -1,7 +1,7 @@
 use std::{net::{SocketAddrV4, UdpSocket}, time::SystemTime};
 
 use bevy::{app::{App, Startup, Update}, ecs::{entity::Entity, system::Resource}, log::info, utils::HashMap, DefaultPlugins};
-use bevy_renet::{transport::{NetcodeClientPlugin, NetcodeServerPlugin}, RenetClientPlugin};
+use bevy_renet::{transport::NetcodeClientPlugin, RenetClientPlugin};
 use renet::{transport::{ClientAuthentication, NetcodeClientTransport}, ClientId, ConnectionConfig, RenetClient};
 
 use crate::systems::{handle_keyboard_input_system, handle_lobby_sync_event_system, handle_player_spawn_event_system, receive_message_system, send_message_system, setup_system, update_player_movement_system};
@@ -18,14 +18,15 @@ pub struct PlayerEntities(pub HashMap<ClientId, Entity>);
 
 fn main() {
     let mut app = App::new();
+
+    // base plugins
     app.add_plugins(RenetClientPlugin);
-
-    let client = RenetClient::new(ConnectionConfig::default());
-    app.insert_resource(client);
-
-    // Setup the transport layer
     app.add_plugins(NetcodeClientPlugin);
     app.add_plugins(DefaultPlugins);
+
+    // renet client
+    let client = RenetClient::new(ConnectionConfig::default());
+    app.insert_resource(client);
 
     let client_id = rand::random::<u64>();
     app.insert_resource(MyClientId(ClientId::from_raw(client_id)));
@@ -48,6 +49,7 @@ fn main() {
 
     app.insert_resource(transport);
 
+    // game systems
     app.add_systems(Update, send_message_system);
     app.add_systems(Update, receive_message_system);
     app.add_systems(Update, handle_keyboard_input_system);
@@ -55,8 +57,6 @@ fn main() {
     app.add_systems(Update, update_player_movement_system);
     app.add_systems(Update, handle_lobby_sync_event_system);
     app.add_systems(Startup, setup_system);
-
-    info!("Starting client {}", client_id);
 
     app.run();
 }
