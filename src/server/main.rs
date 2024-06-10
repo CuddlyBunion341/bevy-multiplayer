@@ -8,8 +8,11 @@ use renet::{
     transport::{NetcodeServerTransport, ServerAuthentication, ServerConfig},
     ConnectionConfig, RenetServer,
 };
-use systems::{handle_events_system, receive_message_system, send_message_system, setup_system, PlayerLobby};
+use systems::{handle_events_system, receive_message_system, send_message_system, setup_system};
+use resources::PlayerLobby;
+
 mod systems;
+mod resources;
 
 const SERVER_ADDR: &str = "127.0.0.1:5000";
 

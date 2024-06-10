@@ -1,13 +1,10 @@
 use std::collections::HashMap;
 
 use bevy::{ecs::{event::EventReader, system::{Res, ResMut, Resource}}, log::info};
-use multiplayer_demo::{PlayerAttributes};
+use multiplayer_demo::PlayerAttributes;
 use renet::{ClientId, DefaultChannel, RenetServer, ServerEvent};
 
-#[derive(Resource, Clone)]
-pub struct PlayerLobby(pub HashMap<ClientId, PlayerAttributes>);
-
-use crate::SERVER_ADDR;
+use crate::{resources::PlayerLobby, SERVER_ADDR};
 
 pub fn setup_system() {
     info!("Server started on {}", SERVER_ADDR);

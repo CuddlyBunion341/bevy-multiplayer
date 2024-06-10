@@ -72,8 +72,6 @@ pub fn receive_message_system(
     }
 }
 
-pub fn handle_keyboard_input_system() {}
-
 pub fn update_player_movement_system(
     mut keyboard_events: EventReader<KeyboardInput>,
     mut query: Query<(&mut Transform, &MyPlayer)>,
@@ -141,7 +139,6 @@ pub fn handle_player_spawn_event_system(
                     ..default()
                 }),
                 mesh: meshes.add(Cuboid::default()),
-
                 ..default()
             },
             PlayerEntity(client_id),
