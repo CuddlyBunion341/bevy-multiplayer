@@ -1,6 +1,6 @@
 use std::{collections::HashMap, net::{SocketAddrV4, UdpSocket}, time::SystemTime};
 
-use bevy::{app::{App, Startup, Update}, ecs::{entity::Entity, system::Resource}, log::info, DefaultPlugins};
+use bevy::{app::{App, Startup, Update}, log::info, DefaultPlugins};
 use bevy_renet::{transport::NetcodeClientPlugin, RenetClientPlugin};
 use renet::{transport::{ClientAuthentication, NetcodeClientTransport}, ClientId, ConnectionConfig, RenetClient};
 

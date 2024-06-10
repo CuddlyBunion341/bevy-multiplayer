@@ -1,8 +1,7 @@
-use std::collections::HashMap;
 
-use bevy::{ecs::{event::EventReader, system::{Res, ResMut, Resource}}, log::info};
+use bevy::{ecs::{event::EventReader, system::{Res, ResMut}}, log::info};
 use multiplayer_demo::PlayerAttributes;
-use renet::{ClientId, DefaultChannel, RenetServer, ServerEvent};
+use renet::{DefaultChannel, RenetServer, ServerEvent};
 
 use crate::{resources::PlayerLobby, SERVER_ADDR};
 
