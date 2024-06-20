@@ -40,3 +40,7 @@ Optimizations:
 cargo run --release --bin server
 cargo run --release --bin client
 ```
+
+## License
+
+This project is licensed under the MIT license. For more information, please refer to the [LICENSE](https://github.com/CuddlyBunion341/bevy-multiplayer/blob/main/LICENSE) file.
