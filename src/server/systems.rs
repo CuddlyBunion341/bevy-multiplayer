@@ -1,4 +1,3 @@
-
 use bevy::{ecs::{event::EventReader, system::{Res, ResMut}}, log::info};
 use multiplayer_demo::PlayerAttributes;
 use renet::{DefaultChannel, RenetServer, ServerEvent};

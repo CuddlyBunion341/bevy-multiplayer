@@ -1,5 +1,5 @@
-use bevy::{ecs::event::Event};
-use multiplayer_demo::{PlayerAttributes};
+use bevy::ecs::event::Event;
+use multiplayer_demo::PlayerAttributes;
 use renet::ClientId;
 
 #[derive(Event)]
