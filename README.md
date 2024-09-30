@@ -1,6 +1,6 @@
 # bevy-multiplayer
 
-This is a simple example of how multiplayer can be achieved in [bevy](https://bevyengine.org/) using [renet](https://github.com/lucaspoffo/renet). [The associated blog article](https://dev.to/cuddlybunion341/multiplayer-in-rust-using-renet-and-bevy-17p6)
+This is a simple example of how multiplayer can be achieved in [bevy](https://bevyengine.org/) using [renet](https://github.com/lucaspoffo/renet). [Associated blog article](https://dev.to/cuddlybunion341/multiplayer-in-rust-using-renet-and-bevy-17p6)
 
 ## Inspiration
 
